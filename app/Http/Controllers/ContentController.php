@@ -19,13 +19,8 @@ class ContentController extends Controller
     public function create(Request $request)
     {
         $contentObj = new Content();
-        $autorId = session('authorId');
-        $data = [
-            'title' => $request->title,
-            'post' => $request->post,
-            'author_id' => $autorId
-        ];
-        $contentObj->create($data);
+        
+        $contentObj->create($request->all());
         $response = [
             'success' => true,
             'message' => "Post save successfully"

@@ -26,12 +26,16 @@
         <h1 class="h3 mb-3 font-weight-normal">Create Post</h1>
         <div class="form-group">
             <label for="firstname" class="sr-only"></label>
-            <input id="name" class="form-control" type="text" name="title"  value="{{$content->title}}" placeholder="Title">
+            <input id="name" class="form-control" type="text" name="title" placeholder="Title">
+            @if(!empty($content->id))
+            <input class="form-control" type="hidden" name="id" value="{{$content->id}}">
+            @endif
+
         </div>
 
         <div class="form-group">
             <label for="lastname" class="sr-only"></label>
-            <textarea id="post" class="form-control" type="text" name="post" value="{{$content->post}}" placeholder="Post"></textarea>
+            <textarea id="post" class="form-control" type="text" name="post" placeholder="Post"></textarea>
         </div>
         <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
     </form>

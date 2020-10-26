@@ -18,9 +18,23 @@ class Content extends Model
         try {
             $content = new Content();
             $content->title = $data['title'];
-            $content->author_id = $data['author_id'];
+            $content->author_id = session('authorId') ?? '';
             $content->post = $data['post'];
-            $content->save();
+
+            if (isset($data['id'])) {
+                $res = DB::table('content')->where('id', $data['id'])->select('author_id')->first();
+                $content->author_id = $res->author_id;
+                DB::table('content')
+                    ->where('id', $data['id'])
+                    ->update([
+                        'author_id' => $res->author_id,
+                        'title' => $data['title'],
+                        'post' => $data['post']
+                    ]);
+            } else {
+                $content->save();
+            }
+
         } catch (Exception $e) {
             throw $e;
         }
@@ -29,8 +43,9 @@ class Content extends Model
     public function findAll()
     {
         try {
-            $res = Content::paginate(15);
-
+            $res = DB::table('content as c')
+                ->select('c.id', 'c.title', 'c.post')
+                ->get();
             return ($res);
         } catch (Exception $e) {
             throw $e;
@@ -42,6 +57,4 @@ class Content extends Model
         $data = DB::table('content')->where('author_id', $authorId)->get();
         return $data;
     }
-
-   
 }
